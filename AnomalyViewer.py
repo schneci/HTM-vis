@@ -1,3 +1,4 @@
+#%%
 from IPython.core.display import display
 import plotly.plotly as py
 import plotly.graph_objs as go
@@ -18,11 +19,9 @@ heighmid = abs(zero + band * 0.7)
 heighmin = abs(zero + band * 0.8)
 
 mid, high = 0.4, 0.8
-#df["color"] = np.where((df.score < mid), "green", np.where((df.score < high) & (df.score >= mid), "yellow", "red"))
-#df["anomaly"] = np.where((df.score < mid), "LOW", np.where((df.score < high) & (df.score >= mid), "MID", "HIGH"))
 
 tdiff = np.diff(df.score.index.values).min()
-#freq = 1e9 / np.diff(outdf.score.index.values).min().astype(int)
+
 fr = str(int(tdiff/(1e9))) + "S"
 freq = str(int(tdiff/(1e9) * 2)) + "S"
 dfbucket = pd.DataFrame()
@@ -34,8 +33,6 @@ dfbucket["anomalycolor"] = np.where(dfbucket.score.isnull(), "white",
 dfbucket["anomaly"] =      np.where(dfbucket.score.isnull(), "",
                            np.where(dfbucket.score < mid, "LOW", 
                            np.where((dfbucket.score < high)  & (dfbucket.score >= mid), "MID", "HIGH")))
-#dfbucket.loc[dfbucket['score'].isnull(), 'anomalycolor'] = "white"
-#dfbucket.loc[dfbucket['score'].isnull(), 'anomaly'] = np.NaN
 
 mid, high = 0.4, 0.51
 
@@ -122,11 +119,14 @@ initial_range = [
     df.head(1).index, df.tail(1).index
 ]
 
-fig = go.FigureWidget(data, layout)
+fig = go.Figure(data, layout)
 #fig["layout"]["xaxis"].update(range=initial_range)
 def handle_zoom(layout, xrange, yrange):
     print('new x-range:', xrange)
     print('new y-range:', yrange)
 fig.layout.on_change(handle_zoom, 'xaxis.range', 'yaxis.range')
 iplot(fig)
-display(fig)
+
+
+
+#%%
